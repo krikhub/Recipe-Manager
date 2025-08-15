@@ -13,7 +13,7 @@
                 </h4>
             </div>
             <div class="card-body">
-                <form method="POST" action="{{ route('recipes.update', $recipe) }}">
+                <form method="POST" action="{{ route('recipes.update', $recipe) }}" enctype="multipart/form-data">
                     @csrf
                     @method('PUT')
                     
@@ -35,12 +35,27 @@
                                 <div class="text-red-500 text-sm mt-1">{{ $message }}</div>
                             @enderror
                         </div>
-                        <div class="col-12">
+                        <div class="col-12 mb-3">
                             <label for="description" class="block text-sm font-medium text-gray-700 fw-bold">Description</label>
                             <textarea class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 @error('description') is-invalid @enderror" 
                                       id="description" name="description" rows="3" 
                                       placeholder="Briefly describe your recipe">{{ old('description', $recipe->description) }}</textarea>
                             @error('description')
+                                <div class="text-red-500 text-sm mt-1">{{ $message }}</div>
+                            @enderror
+                        </div>
+                        <div class="col-12">
+                            <label for="image" class="block text-sm font-medium text-gray-700 fw-bold">Recipe Image</label>
+                            @if($recipe->image)
+                                <div class="mb-2">
+                                    <img src="{{ asset($recipe->image) }}" alt="Current recipe image" class="w-32 h-32 object-cover rounded border">
+                                    <p class="text-sm text-gray-500">Current image</p>
+                                </div>
+                            @endif
+                            <input type="file" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 @error('image') is-invalid @enderror" 
+                                   id="image" name="image" accept="image/*">
+                            <p class="text-sm text-gray-500 mt-1">Upload a new image for your recipe (JPEG, PNG, JPG, GIF - Max 2MB) or leave blank to keep current image</p>
+                            @error('image')
                                 <div class="text-red-500 text-sm mt-1">{{ $message }}</div>
                             @enderror
                         </div>

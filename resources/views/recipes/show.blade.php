@@ -8,7 +8,12 @@
     <div class="lg:col-span-8">
         <!-- Recipe Header -->
         <div class="bg-white shadow rounded-lg mb-4">
-            <div class="bg-blue-500 text-white px-6 py-4 rounded-t-lg">
+            @if($recipe->image)
+                <div class="h-64 bg-gray-200 rounded-t-lg overflow-hidden">
+                    <img src="{{ asset($recipe->image) }}" alt="{{ $recipe->name }}" class="w-full h-full object-cover">
+                </div>
+            @endif
+            <div class="bg-blue-500 text-white px-6 py-4 {{ $recipe->image ? '' : 'rounded-t-lg' }}">
                 <div class="flex justify-between items-center">
                     <div>
                         <h1 class="text-xl font-bold mb-1">

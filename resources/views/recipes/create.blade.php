@@ -13,7 +13,7 @@
                 </h4>
             </div>
             <div class="card-body">
-                <form method="POST" action="{{ route('recipes.store') }}">
+                <form method="POST" action="{{ route('recipes.store') }}" enctype="multipart/form-data">
                     @csrf
                     
                     <!-- Basic Information Section -->
@@ -34,12 +34,21 @@
                                 <div class="text-red-500 text-sm mt-1">{{ $message }}</div>
                             @enderror
                         </div>
-                        <div class="col-12">
+                        <div class="col-12 mb-3">
                             <label for="description" class="block text-sm font-medium text-gray-700 fw-bold">Description</label>
                             <textarea class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 @error('description') is-invalid @enderror" 
                                       id="description" name="description" rows="3" 
                                       placeholder="Briefly describe your recipe">{{ old('description') }}</textarea>
                             @error('description')
+                                <div class="text-red-500 text-sm mt-1">{{ $message }}</div>
+                            @enderror
+                        </div>
+                        <div class="col-12">
+                            <label for="image" class="block text-sm font-medium text-gray-700 fw-bold">Recipe Image</label>
+                            <input type="file" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 @error('image') is-invalid @enderror" 
+                                   id="image" name="image" accept="image/*">
+                            <p class="text-sm text-gray-500 mt-1">Upload an image for your recipe (JPEG, PNG, JPG, GIF - Max 2MB)</p>
+                            @error('image')
                                 <div class="text-red-500 text-sm mt-1">{{ $message }}</div>
                             @enderror
                         </div>

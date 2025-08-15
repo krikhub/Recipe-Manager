@@ -15,6 +15,7 @@ class Recipe extends Model
         'cook_time',
         'servings',
         'difficulty',
-        'category'
+        'category',
+        'image'
     ];
 }

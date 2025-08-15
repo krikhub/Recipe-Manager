@@ -90,6 +90,11 @@
         @foreach($recipes as $recipe)
             <div class="">
                 <div class="bg-white shadow rounded-lg h-full flex flex-col">
+                    @if($recipe->image)
+                        <div class="h-48 bg-gray-200 rounded-t-lg overflow-hidden">
+                            <img src="{{ asset($recipe->image) }}" alt="{{ $recipe->name }}" class="w-full h-full object-cover">
+                        </div>
+                    @endif
                     <div class="p-6 flex-grow">
                         <div class="flex justify-between items-start mb-2">
                             <h5 class="text-lg font-semibold mb-1">{{ $recipe->name }}</h5>

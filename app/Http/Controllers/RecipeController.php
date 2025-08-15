@@ -60,10 +60,19 @@ class RecipeController extends Controller
             'cook_time' => 'nullable|string',
             'servings' => 'nullable|integer',
             'difficulty' => 'nullable|string',
-            'category' => 'nullable|string'
+            'category' => 'nullable|string',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048'
         ]);
         
-        Recipe::create($request->all());
+        $data = $request->all();
+        
+        if ($request->hasFile('image')) {
+            $imageName = time().'.'.$request->image->extension();
+            $request->image->move(public_path('images/recipes'), $imageName);
+            $data['image'] = 'images/recipes/'.$imageName;
+        }
+        
+        Recipe::create($data);
         
         return redirect()->route('recipes.index')->with('success', 'Recipe created successfully!');
     }
@@ -98,10 +107,24 @@ class RecipeController extends Controller
             'cook_time' => 'nullable|string',
             'servings' => 'nullable|integer',
             'difficulty' => 'nullable|string',
-            'category' => 'nullable|string'
+            'category' => 'nullable|string',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048'
         ]);
         
-        $recipe->update($request->all());
+        $data = $request->all();
+        
+        if ($request->hasFile('image')) {
+            // Delete old image if exists
+            if ($recipe->image && file_exists(public_path($recipe->image))) {
+                unlink(public_path($recipe->image));
+            }
+            
+            $imageName = time().'.'.$request->image->extension();
+            $request->image->move(public_path('images/recipes'), $imageName);
+            $data['image'] = 'images/recipes/'.$imageName;
+        }
+        
+        $recipe->update($data);
         
         return redirect()->route('recipes.index')->with('success', 'Recipe updated successfully!');
     }
@@ -111,6 +134,11 @@ class RecipeController extends Controller
      */
     public function destroy(Recipe $recipe)
     {
+        // Delete associated image file if it exists
+        if ($recipe->image && file_exists(public_path($recipe->image))) {
+            unlink(public_path($recipe->image));
+        }
+        
         $recipe->delete();
         
         return redirect()->route('recipes.index')->with('success', 'Recipe deleted successfully!');
